@@ -1,7 +1,7 @@
 #include <EEPROM.h>
-#include <Ethernet.h>
 #include <SPI.h>
 
+#include <Ethernet.h>
 #include "website.h"
 
 // ARDUINO MEGA - jedna strižna, keepAlive, chceckInputNumber, JavaScript, abillity to save inputs profile, CBM, vylepsenie TCP
@@ -13,7 +13,7 @@
 #define EEPROMe
 #define DHCP
 
-#define VERSION "ETH_basic_RLS04_06.09.2022"
+#define VERSION "ETH_basic_v1.1.2"
 
 #define DEFAULT_VALUE 0b001001001001001
 #define RECONNECT     1000  // connecting to vMix
@@ -26,7 +26,7 @@
 
 #define pinHc12
 
-byte mac[] = {0x02, 0x54, 0x4C, 0x53, 0x00, 0x03};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
+byte mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
 IPAddress ip(192, 168, 0, 100);                     // DHCP preferred
 
 EthernetClient client;
@@ -54,6 +54,11 @@ void setup() {
   Serial.begin(115200);
   Serial1.begin(9600);
 
+#ifdef DEBUG
+  Serial.print("\n\nversion: ");
+  Serial.println(VERSION);
+#endif
+
 #ifdef EEPROMe
   for (uint8_t i = 0; i < 4; i++) {
     IPaddr[i] = EEPROM.read(i);
@@ -65,7 +70,7 @@ void setup() {
 
 #ifdef DHCP
   if (Ethernet.begin(mac) == 0) {
-    // Serial.println("Failed to configure Ethernet using DHCP");
+    Serial.println("\nDHCP Failed");
     Ethernet.begin(mac, ip);
   } else {
     // Serial.print("DHCP assigned IP ");
@@ -77,8 +82,6 @@ void setup() {
 
   server.begin();
 #ifdef DEBUG
-  Serial.print("\n\nversion: ");
-  Serial.println(VERSION);
   Serial.print("server BEGIN: ");
   Serial.println(Ethernet.localIP());
 #endif
@@ -326,7 +329,7 @@ uint8_t connectTovMix() {
 #ifdef DEBUG
   Serial.printf("result:%d...on socket:%d...", result, client.getSocketNumber());
 #endif
-  if (result == 1) {
+  if (result == 23) {
 #ifdef DEBUG
     Serial.println("successful");
     cMillis3 = millis();
