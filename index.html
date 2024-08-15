@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!-- 
+        Tally Light System 
+    designed by Martin Tavoda
+-->
+<title>TLS configuration</title>
+<html>
+
+<head>
+	<link rel="icon" href="data:,">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+	<style>
+		#loader {
+			position: absolute;
+			right: 35%;
+			border: 5px solid #ffffff;
+			border-radius: 50%;
+			border-top: 5px solid #666;
+			width: 25px;
+			height: 25px;
+			-webkit-animation: spin 1s linear infinite;
+			animation: spin 1s linear infinite;
+		}
+
+		@-webkit-keyframes spin {
+			0% {
+				-webkit-transform: rotate(0deg);
+			}
+
+			100% {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		input[type=text],
+		input[type=number],
+		select,
+		textarea {
+			width: 80%;
+			padding: 12px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+			margin-top: 6px;
+			margin-bottom: 16px;
+			resize: vertical;
+		}
+
+		label {
+			display: block;
+		}
+
+		input[type=text]#IPaddr {
+			width: 100%;
+		}
+
+		input[type=number].brightness {
+			width: 19%;
+		}
+
+		input[type=submit],
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button {
+			background-color: red;
+			margin-left: 3px;
+		}
+
+		button:hover {
+			background-color: rgb(207, 0, 0);
+		}
+
+		.button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			width: 100px;
+			margin: 0 4px;
+		}
+
+		input[type=submit].button {
+			width: 120px;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 14px;
+		}
+
+		a.button.refresh {
+			background-color: #666;
+			text-decoration: none;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 14px;
+		}
+
+		.button:hover {
+			background-color: #45a049;
+		}
+
+		a.button.refresh:hover {
+			background-color: rgb(134, 134, 134);
+		}
+
+		.buttons {
+			clear: both;
+			padding: 20px 0 0 0;
+			text-align: center;
+		}
+
+		.buttons>* {
+			display: inline-block;
+		}
+
+		.container {
+			position: relative;
+			border-radius: 5px;
+			background-color: #f2f2f2;
+			padding: 20px;
+			margin-left: auto;
+			margin-right: auto;
+			width: 50%;
+		}
+
+		#connected {
+			color: #4CAF50;
+			margin-top: 10px;
+			text-align: center;
+		}
+
+		#disconnected {
+			color: red;
+			margin-top: 10px;
+			text-align: center;
+		}
+
+		#footer {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+		$(document).ready(function () {
+			$("#loader").hide();
+			if (document.URL.indexOf("IPaddr") >= 0) {
+				$("#loader").show();
+				setTimeout(function () {
+					window.location.replace("/");
+				}, 1000);
+			}
+		});
+		//<p id="connected">CONNECTED</p>
+		//<button name="save" type="submit">Save</button>
+	</script>
+
+	<h3 style="text-align: center;">Tally Light System configuration <br> designed for vMix</h3>
+
+	<div class="container">
+		<form id="form" action="">
+			<label for="IPaddr">Video switcher IP address</label>
+			<input type="text" id="IPaddr" name="IPaddr" placeholder="IP address"
+				value="~IPaddr[0]`IPaddr[1]`IPaddr[2]`IPaddr[3]^">
+			<div id="loader"></div>
+			~status^
+			<p>Receiver number - vMix input</p>
+			<label for="T1">1. Receiver</label>
+			<input type="number" min="0" max="255" id="T1" name="T1" placeholder="vMix input number"
+				value="~inputNumber[0]^">
+			<input type="number" min="1" max="6" step="1" id="B1" class="brightness" name="B1" value="~brightness[0]^">
+			<label for="T2">2. Receiver</label>
+			<input type="number" min="0" max="255" id="T2" name="T2" placeholder="vMix input number"
+				value="~inputNumber[1]^">
+			<input type="number" min="1" max="6" step="1" id="B2" class="brightness" name="B2" value="~brightness[1]^">
+			<label for="T1">3. Receiver</label>
+			<input type="number" min="0" max="255" id="T3" name="T3" placeholder="vMix input number"
+				value="~inputNumber[2]^">
+			<input type="number" min="1" max="6" step="1" id="B3" class="brightness" name="B3" value="~brightness[2]^">
+			<label for="T2">4. Receiver</label>
+			<input type="number" min="0" max="255" id="T4" name="T4" placeholder="vMix input number"
+				value="~inputNumber[3]^">
+			<input type="number" min="1" max="6" step="1" id="B4" class="brightness" name="B4" value="~brightness[3]^">
+			<label for="T2">5. Receiver</label>
+			<input type="number" min="0" max="255" id="T5" name="T5" placeholder="vMix input number"
+				value="~inputNumber[4]^">
+			<input type="number" min="1" max="6" step="1" id="B5" class="brightness" name="B5" value="~brightness[4]^">
+
+			<div class="buttons">
+				<a class="button refresh" href="/">Refresh</a>
+				<input class="button" type="Submit" value="Submit">
+				~save^
+			</div>
+		</form>
+		<div id="footer">~version^ &copy eMT</div>
+	</div>
+
+</body>
+
+</html>
