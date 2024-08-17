@@ -1,7 +1,7 @@
 #include <EEPROM.h>
+#include <Ethernet.h>
 #include <SPI.h>
 
-#include <Ethernet.h>
 #include "website.h"
 
 // ARDUINO MEGA - jedna strižna, keepAlive, chceckInputNumber, JavaScript, abillity to save inputs profile, CBM, vylepsenie TCP
@@ -24,7 +24,8 @@
 #define PREVIEW       2    // 2
 #define NOTHING       1    // 1
 
-#define pinHc12
+#define PIN_HC12_set       22
+#define PIN_ETH_PHY_status 9
 
 byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
 IPAddress TLS_ip(192, 168, 0, 200);                     // DHCP preferred
@@ -54,6 +55,8 @@ void setup() {
   Serial.begin(115200);
   Serial1.begin(9600);
 
+  pinMode(PIN_ETH_PHY_status, INPUT);
+
 #ifdef DEBUG
   Serial.print("\n\nversion: ");
   Serial.println(VERSION);
@@ -68,13 +71,19 @@ void setup() {
   }
 #endif
 
+  // Check if PHY link, if not, do nothing till cable is connected
+  if (PHY_status() == false) {
+    Serial.println("Eth cable disconnected!");
+    while (PHY_status() == false);
+    Serial.println("Eth cable connected!");
+  }
+
 #ifdef DHCP
   if (Ethernet.begin(TLS_mac, 5000) == 0) {
     Serial.println("DHCP timeout, using static IP");
     Ethernet.begin(TLS_mac, TLS_ip);
   } else
     Serial.println("DHCP assigned IP");
-
 #else
   Ethernet.begin(TLS_mac, TLS_ip);
 #endif
@@ -398,4 +407,11 @@ void processSwitcherData(char *gdata) {
     Serial1.write(code >> 8);
     Serial1.write(255);
   }
+}
+
+bool PHY_status() {
+  if (digitalRead(PIN_ETH_PHY_status))  // active low
+    return 0;
+  else
+    return 1;
 }
