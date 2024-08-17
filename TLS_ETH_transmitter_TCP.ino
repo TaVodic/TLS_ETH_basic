@@ -1,5 +1,5 @@
 #include <EEPROM.h>
-#include <Ethernet.h>
+#include <EthernetMT.h>
 #include <SPI.h>
 
 #include "website.h"
