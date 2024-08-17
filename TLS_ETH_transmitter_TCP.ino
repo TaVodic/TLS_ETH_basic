@@ -13,7 +13,7 @@
 #define EEPROMe
 #define DHCP
 
-#define VERSION "ETH_basic_v1.1.2"
+#define VERSION "ETH_basic_v1.2.0"
 
 #define DEFAULT_VALUE 0b001001001001001
 #define RECONNECT     1000  // connecting to vMix
@@ -26,8 +26,8 @@
 
 #define pinHc12
 
-byte mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
-IPAddress ip(192, 168, 0, 100);                     // DHCP preferred
+byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
+IPAddress TLS_ip(192, 168, 0, 200);                     // DHCP preferred
 
 EthernetClient client;
 EthernetServer server(80);
@@ -45,7 +45,7 @@ uint8_t keepAliveFlag;
 uint8_t runned;
 uint16_t code = DEFAULT_VALUE;  // 4681
 char message[200];
-uint8_t IPaddr[4] = {192, 168, 0, 200};  // mixer IP address
+uint8_t IPaddr[4] = {192, 168, 0, 101};  // mixer IP address
 uint8_t inputNumber[5] = {1, 2, 3, 4, 5};
 uint8_t brightness[5] = {6, 6, 6, 6, 6};
 uint8_t old_len;
@@ -69,15 +69,14 @@ void setup() {
 #endif
 
 #ifdef DHCP
-  if (Ethernet.begin(mac) == 0) {
-    Serial.println("\nDHCP Failed");
-    Ethernet.begin(mac, ip);
-  } else {
-    // Serial.print("DHCP assigned IP ");
-    // Serial.println(Ethernet.localIP());
-  }
+  if (Ethernet.begin(TLS_mac, 5000) == 0) {
+    Serial.println("DHCP timeout, using static IP");
+    Ethernet.begin(TLS_mac, TLS_ip);
+  } else
+    Serial.println("DHCP assigned IP");
+
 #else
-  Ethernet.begin(mac, ip);
+  Ethernet.begin(TLS_mac, TLS_ip);
 #endif
 
   server.begin();
