@@ -9,9 +9,6 @@
 <head>
 	<link rel="icon" href="data:,">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 	<style>
 		#loader {
 			position: absolute;
@@ -164,13 +161,15 @@
 
 <body>
 	<script>
-		$(document).ready(function () {
-			$("#loader").hide();
-			if (document.URL.indexOf("IPaddr") >= 0) {
-				$("#loader").show();
+		document.addEventListener("DOMContentLoaded", function () {
+			var loader = document.getElementById('loader');
+			if (window.location.href.indexOf('IPaddr') > -1) {
+				loader.style.display = 'block';
 				setTimeout(function () {
 					window.location.replace("/");
 				}, 1000);
+			} else {
+				loader.style.display = 'none';
 			}
 		});
 		//<p id="connected">CONNECTED</p>
