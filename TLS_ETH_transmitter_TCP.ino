@@ -36,7 +36,7 @@ EthernetServer server(80);
 const char connected[] = "<p id=\"connected\">CONNECTED</p>";
 const char disconnected[] = "<p id=\"disconnected\">DISCONNECTED</p>";
 const char save[] = "<button name=\"save\" type=\"submit\" id=\"save\">Save</button>";
-char *p_save;
+const char *p_save;
 uint8_t status;
 
 unsigned long cMillis;
@@ -290,12 +290,12 @@ void proccessBrightnessFrame() {
 
 /*client vMix*/
 void vMixHandle() {
-  int8_t len = client.available();
+  size_t len = client.available();
   if (len > 0) {
     keepAliveFlag = 0;  // vynuluj keepAlive flag - prisli data, niet dovod na paniku
     cMillis3 = millis();
     char buffer[len + 10];
-    client.read(buffer, len);
+    client.read((uint8_t *)buffer, len);
     // Serial.println(len);
     processSwitcherData(buffer);
 #ifdef DEBUG
@@ -377,7 +377,7 @@ void processSwitcherData(char *gdata) {
     p_data = strrchr(gdata, ' ');  // find last space from end -  TALLY OK' '01200
     // checkInputNumber(p_data);
     p_data += 1;
-    uint16_t default_p = p_data;
+    char *default_p = p_data;
     uint8_t len = strlen(p_data) - 3;  // number of current vMix inputs
     // Serial.println(len);
 

@@ -1,4 +1,4 @@
-void website(EthernetClient &client, uint8_t IPaddr[], uint8_t inputNumber[], char* status, char* save, uint8_t brightness[], const char* version){
+void website(EthernetClient &client, uint8_t IPaddr[], uint8_t inputNumber[], const char* status, const char* save, uint8_t brightness[], const char* version){
      client.print("<!DOCTYPE html>");
      client.print("<!-- ");
      client.print("        Tally Light System ");
