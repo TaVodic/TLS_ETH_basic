@@ -9,6 +9,7 @@
 		body {
 			font-family: 'Arial', 'Helvetica', 'Verdana', sans-serif;
 		}
+
 		#loader {
 			position: absolute;
 			right: 35%;
@@ -60,23 +61,23 @@
 		}
 
 		input[type=text]#IPaddr {
-            width: calc(100% - 200px);
-        }
+			width: calc(100% - 200px);
+		}
 
-        .input-group {
+		.input-group {
 			width: 50%;
 			margin: 0 auto;
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-        }
+			display: flex;
+			align-items: center;
+			margin-bottom: 16px;
+		}
 
-        .input-group label {
-            margin-right: 30px;
-            width: 200px;
-            text-align: right;
+		.input-group label {
+			margin-right: 30px;
+			width: 200px;
+			text-align: right;
 			padding-bottom: 8px;
-        }
+		}
 
 		input[type=submit],
 		button {
@@ -146,7 +147,7 @@
 			padding: 20px;
 			margin-left: auto;
 			margin-right: auto;
-			width: 50%;
+			width: 40%;
 		}
 
 		#connected {
@@ -171,16 +172,16 @@
 			width: 80%;
 			border-collapse: collapse;
 			margin: 0 auto;
-			margin-bottom: 20px;			
+			margin-bottom: 20px;
 		}
 
 		th,
 		td {
 			padding: 2px;
-			text-align: center;		
+			text-align: center;
 		}
 
-		td label{
+		td label {
 			padding-bottom: 8px;
 		}
 
@@ -220,6 +221,11 @@
 			cursor: pointer;
 			border-radius: 50%;
 		}
+
+		table td:first-child {
+			font-weight: bold;
+			width: 30%;
+		}
 	</style>
 </head>
 
@@ -238,7 +244,7 @@
 		});
 	</script>
 
-	<h3 style="text-align: center;">Tally Light System configuration <br> for vMix switchers</h3>
+	<h3 style="text-align: center;">Tally Light System configuration <br> for vMix switcher</h3>
 
 	<div class="container">
 		<form id="form" action="">
@@ -251,43 +257,43 @@
 			~status^
 			<table>
 				<thead>
-					<tr id="rnumber">
-						<th>Receiver number</th>
+					<tr>
+						<th></th>
 						<th>vMix input number</th>
 						<th>Brightness</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td><label for="T1">1.</label></td>
+						<td><label for="T1">1. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T1" name="T1" placeholder="vMix input number"
 								value="~inputNumber[0]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B1" class="slider" name="B1"
 								value="~brightness[0]^"></td>
 					</tr>
 					<tr>
-						<td><label for="T2">2.</label></td>
+						<td><label for="T2">2. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T2" name="T2" placeholder="vMix input number"
 								value="~inputNumber[1]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B2" class="slider" name="B2"
 								value="~brightness[1]^"></td>
 					</tr>
 					<tr>
-						<td><label for="T3">3.</label></td>
+						<td><label for="T3">3. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T3" name="T3" placeholder="vMix input number"
 								value="~inputNumber[2]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B3" class="slider" name="B3"
 								value="~brightness[2]^"></td>
 					</tr>
 					<tr>
-						<td><label for="T4">4.</label></td>
+						<td><label for="T4">4. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T4" name="T4" placeholder="vMix input number"
 								value="~inputNumber[3]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B4" class="slider" name="B4"
 								value="~brightness[3]^"></td>
 					</tr>
 					<tr>
-						<td><label for="T5">5.</label></td>
+						<td><label for="T5">5. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T5" name="T5" placeholder="vMix input number"
 								value="~inputNumber[4]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B5" class="slider" name="B5"
