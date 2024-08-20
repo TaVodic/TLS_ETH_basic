@@ -15,11 +15,11 @@
 			right: 35%;
 			border: 5px solid #ffffff;
 			border-radius: 50%;
-			border-top: 5px solid #666;
+			border-top: 5px solid red;
 			width: 25px;
 			height: 25px;
 			-webkit-animation: spin 1s linear infinite;
-			animation: spin 1s linear infinite;
+			animation: spin 0.5s linear infinite;
 		}
 
 		@-webkit-keyframes spin {
@@ -74,7 +74,7 @@
 
 		.input-group label {
 			margin-right: 30px;
-			width: 200px;
+			width: 300px;
 			text-align: right;
 			padding-bottom: 8px;
 		}
@@ -147,7 +147,7 @@
 			padding: 20px;
 			margin-left: auto;
 			margin-right: auto;
-			width: 40%;
+			width: 50%;
 		}
 
 		#connected {
@@ -226,6 +226,75 @@
 			font-weight: bold;
 			width: 30%;
 		}
+
+		#freq_text{
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 10px;
+			font-size: 14px;
+		}
+		
+		.switch-container {			
+			align-items: center;
+			margin-bottom: 20px;
+		}
+		
+		.switch {
+			position: relative;
+			margin: auto;
+			width: 90px;
+			height: 30px;
+			background-color: #ddd;
+			border-radius: 4px;
+			display: flex;
+			justify-content: space-between;
+			padding: 3.75px;
+		}
+		
+		.switch input[type="radio"] {
+			display: none;
+		}
+		
+		.switch-label {
+			width: 30px;
+			height: 30px;
+			line-height: 30px;
+			text-align: center;
+			color: #fff;
+			cursor: pointer;
+			position: relative;
+			z-index: 1;
+		}
+		
+		.switch-slider {
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			background-color: #4CAF50;
+			border-radius: 11.25px;
+			transition: left 0.3s;
+		}
+		
+		input[type="radio"]:checked + .switch-label {
+			color: #000;
+		}
+		
+		#switchA:checked ~ .switch-slider {
+			left: 3.75px;
+		}
+		
+		#switchB:checked ~ .switch-slider {
+			left: 33.75px;
+		}
+		
+		#switchC:checked ~ .switch-slider {
+			left: 63.75px;
+		}
+		
+		label {
+			font-weight: bold;
+		}
+		
 	</style>
 </head>
 
@@ -251,10 +320,10 @@
 			<div class="input-group">
 				<label for="IPaddr">vMix switcher IP address</label>
 				<input type="text" id="IPaddr" name="IPaddr" placeholder="IP address"
-					value="~IPaddr[0]`IPaddr[1]`IPaddr[2]`IPaddr[3]^">
+					value="°IPaddr[0]`IPaddr[1]`IPaddr[2]`IPaddr[3]^">
 			</div>
 			<div id="loader"></div>
-			~status^
+			°status^
 			<table>
 				<thead>
 					<tr>
@@ -267,48 +336,61 @@
 					<tr>
 						<td><label for="T1">1. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T1" name="T1" placeholder="vMix input number"
-								value="~inputNumber[0]^"></td>
+								value="°inputNumber[0]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B1" class="slider" name="B1"
-								value="~brightness[0]^"></td>
+								value="°brightness[0]^"></td>
 					</tr>
 					<tr>
 						<td><label for="T2">2. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T2" name="T2" placeholder="vMix input number"
-								value="~inputNumber[1]^"></td>
+								value="°inputNumber[1]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B2" class="slider" name="B2"
-								value="~brightness[1]^"></td>
+								value="°brightness[1]^"></td>
 					</tr>
 					<tr>
 						<td><label for="T3">3. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T3" name="T3" placeholder="vMix input number"
-								value="~inputNumber[2]^"></td>
+								value="°inputNumber[2]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B3" class="slider" name="B3"
-								value="~brightness[2]^"></td>
+								value="°brightness[2]^"></td>
 					</tr>
 					<tr>
 						<td><label for="T4">4. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T4" name="T4" placeholder="vMix input number"
-								value="~inputNumber[3]^"></td>
+								value="°inputNumber[3]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B4" class="slider" name="B4"
-								value="~brightness[3]^"></td>
+								value="°brightness[3]^"></td>
 					</tr>
 					<tr>
 						<td><label for="T5">5. Receiver</label></td>
 						<td><input type="number" min="0" max="255" id="T5" name="T5" placeholder="vMix input number"
-								value="~inputNumber[4]^"></td>
+								value="°inputNumber[4]^"></td>
 						<td><input type="range" min="1" max="6" step="1" id="B5" class="slider" name="B5"
-								value="~brightness[4]^"></td>
+								value="°brightness[4]^"></td>
 					</tr>
 				</tbody>
 			</table>
 
+			<div class="switch-container">
+				<label id="freq_text">Frequency preset</label>
+				<div class="switch">
+					<input type="radio" name="F" id="switchA" value="A" °p_frq_checked[0]^>
+					<label for="switchA" class="switch-label">A</label>
+					<input type="radio" name="F" id="switchB" value="B" °p_frq_checked[1]^>
+					<label for="switchB" class="switch-label">B</label>
+					<input type="radio" name="F" id="switchC" value="C" °p_frq_checked[2]^>
+					<label for="switchC" class="switch-label">C</label>
+					<div class="switch-slider"></div>
+				</div>
+			</div>
+
 			<div class="buttons">
 				<a class="button refresh" href="/">Refresh</a>
 				<input class="button" type="Submit" value="Submit">
-				~save^
+				°save^
 			</div>
 		</form>
-		<div id="footer">~version^ &copy eMT</div>
+		<div id="footer">°version^ &copy eMT</div>
 	</div>
 </body>
 

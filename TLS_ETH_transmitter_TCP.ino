@@ -36,6 +36,7 @@ EthernetServer server(80);
 const char connected[] = "<p id=\"connected\">CONNECTED</p>";
 const char disconnected[] = "<p id=\"disconnected\">DISCONNECTED</p>";
 const char save[] = "<button name=\"save\" type=\"submit\" id=\"save\">Save</button>";
+const char frq_checked[] = "checked";  // string to show frequency preset
 const char *p_save;
 uint8_t status;
 
@@ -49,6 +50,10 @@ char message[200];
 uint8_t IPaddr[4] = {192, 168, 0, 101};  // mixer IP address
 uint8_t inputNumber[5] = {1, 2, 3, 4, 5};
 uint8_t brightness[5] = {6, 6, 6, 6, 6};
+enum Frequency_preset { A,
+                        B,
+                        C } frequency_preset;
+const char *p_frq_checked[3] = {NULL};
 uint8_t old_len;
 
 void setup() {
@@ -99,6 +104,8 @@ void setup() {
   // client.setConnectionTimeout(3000);
   // Ethernet.setRetransmissionTimeout(50);
   // Ethernet.setRetransmissionCount(8);
+
+  p_frq_checked[2] = frq_checked;
 }
 
 void loop() {
@@ -145,9 +152,9 @@ void configClientConnect() {
 #endif
           processConfData();
           if (status) {
-            website(conf, IPaddr, inputNumber, connected, p_save, brightness, VERSION);
+            website(conf, IPaddr, inputNumber, connected, p_save, p_frq_checked, brightness, VERSION);
           } else {
-            website(conf, IPaddr, inputNumber, disconnected, p_save, brightness, VERSION);
+            website(conf, IPaddr, inputNumber, disconnected, p_save, p_frq_checked, brightness, VERSION);
           }
           p_message = NULL;
           break;
@@ -226,6 +233,18 @@ void processConfData() {
         p_data++;
       }
       p_data += 4;
+    }
+
+    Serial.printf("\nFREQ: %c\n", *(p_data - 1));
+
+    p_data--;
+    if (*p_data >= 'A' && *p_data <= 'C') {  // check if poiner is pointing correctly
+      frequency_preset = (Frequency_preset)((*p_data) - 65);
+      update_p_frq_checked();
+      // TODO: Actually set HC12
+      // TODO: write to EEPROM
+    } else {
+      Serial.printf("\n\nERROR: pointer out of colected data");
     }
 
     proccessBrightnessFrame();
@@ -321,7 +340,7 @@ void vMixHandle() {
     }
     status = 0;
   } else {
-    keepAlive();
+    // keepAlive();
     status = 1;
   }
 }
@@ -414,4 +433,15 @@ bool PHY_status() {
     return 0;
   else
     return 1;
+}
+
+// set pointer array according to preset, NULL or "checked"
+void update_p_frq_checked() {
+  for (uint8_t i = 0; i < 3; i++) {
+    if (frequency_preset == i) {
+      p_frq_checked[i] = frq_checked;
+    } else {
+      p_frq_checked[i] = NULL;
+    }
+  }
 }

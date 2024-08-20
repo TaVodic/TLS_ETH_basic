@@ -4,7 +4,7 @@ with open("website.h", 'w', encoding="utf8") as output_file:
     #output_file.write('#define WEBSITE ')
     with open('index.html', 'r', encoding="utf8") as input_file:
         output_file.write('#include <Ethernet.h>\n')
-        output_file.write('void website(EthernetClient &client, uint8_t IPaddr[], uint8_t inputNumber[], const char* status, const char* save, uint8_t brightness[], const char* version){')
+        output_file.write('void website(EthernetClient &client, uint8_t IPaddr[], uint8_t inputNumber[], const char* status, const char* save, const char* p_frq_checked[], uint8_t brightness[], const char* version){')
         output_file.write('\n')  
         x = 0
         for line in input_file.readlines():
@@ -19,7 +19,7 @@ with open("website.h", 'w', encoding="utf8") as output_file:
                 line = line.replace('	', '')                
                 line = line.replace('\n', '')
                 line = line.replace('"', '\\"')
-                line = line.replace('~', '");\n     client.print(')
+                line = line.replace('°', '");\n     client.print(')
                 line = line.replace('`', ');\n     client.print(".");\n     client.print(')
                 line = line.replace('^', ');\n     client.print("')
                 output_file.write(line) 
