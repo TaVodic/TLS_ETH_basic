@@ -104,8 +104,6 @@ void setup() {
   // client.setConnectionTimeout(3000);
   // Ethernet.setRetransmissionTimeout(50);
   // Ethernet.setRetransmissionCount(8);
-
-  p_frq_checked[2] = frq_checked;
 }
 
 void loop() {
@@ -309,7 +307,7 @@ void proccessBrightnessFrame() {
 
 /*client vMix*/
 void vMixHandle() {
-  size_t len = client.available();
+  uint8_t len = client.available();
   if (len > 0) {
     keepAliveFlag = 0;  // vynuluj keepAlive flag - prisli data, niet dovod na paniku
     cMillis3 = millis();
