@@ -27,6 +27,10 @@
 #define PIN_HC12_set       22
 #define PIN_ETH_PHY_status 9
 
+#define EEPROM_ADDR_IPaddr          0 // 4*uint8_t 0-3
+#define EEPROM_ADDR_inputNumber     4 // 5*uint8_t 4-8
+#define EEPROM_ADDR_frequencyPreset 9 // 1*uint8_t
+
 byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
 IPAddress TLS_ip(192, 168, 0, 200);                     // DHCP preferred
 
@@ -52,8 +56,8 @@ uint8_t inputNumber[5] = {1, 2, 3, 4, 5};
 uint8_t brightness[5] = {6, 6, 6, 6, 6};
 enum Frequency_preset { A,
                         B,
-                        C } frequency_preset;
-const char *p_frq_checked[3] = {NULL};
+                        C } frequency_preset;  // value storing the current preset
+const char *p_frq_checked[3] = {NULL};         // array of pointers, where the one element points to "checked" showed on website
 uint8_t old_len;
 
 void setup() {
@@ -69,11 +73,14 @@ void setup() {
 
 #ifdef EEPROMe
   for (uint8_t i = 0; i < 4; i++) {
-    IPaddr[i] = EEPROM.read(i);
+    IPaddr[i] = EEPROM.read(EEPROM_ADDR_IPaddr + i);
   }
   for (uint8_t i = 0; i < 5; i++) {
-    inputNumber[i] = EEPROM.read(i + 4);
+    inputNumber[i] = EEPROM.read(EEPROM_ADDR_inputNumber + i);
   }
+  frequency_preset = (Frequency_preset)EEPROM.read(EEPROM_ADDR_frequencyPreset);  
+  update_p_frq_checked();
+  // Serial.printf("EEPROM freq preset: %c\n", frequency_preset + 65);
 #endif
 
   // Check if PHY link, if not, do nothing till cable is connected
@@ -264,17 +271,17 @@ void processConfData() {
 
 #ifdef EEPROMe
     for (uint8_t i = 0; i < 4; i++) {
-      EEPROM.write(i, IPaddr[i]);
+      EEPROM.write(EEPROM_ADDR_IPaddr + i, IPaddr[i]);
     }
     if (strstr(message, "save=")) {
       for (uint8_t i = 0; i < 5; i++) {
-        EEPROM.write(i + 4, inputNumber[i]);
+        EEPROM.write(EEPROM_ADDR_inputNumber + i, inputNumber[i]);
       }
       p_save = NULL;
     } else {
       checkInputNumberProfile();
     }
-
+    EEPROM.write(EEPROM_ADDR_frequencyPreset, (uint8_t)frequency_preset);
 #endif
   }
 }
