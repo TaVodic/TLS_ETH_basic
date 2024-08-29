@@ -27,9 +27,9 @@
 #define PIN_HC12_set       22
 #define PIN_ETH_PHY_status 9
 
-#define EEPROM_ADDR_IPaddr          0 // 4*uint8_t 0-3
-#define EEPROM_ADDR_inputNumber     4 // 5*uint8_t 4-8
-#define EEPROM_ADDR_frequencyPreset 9 // 1*uint8_t
+#define EEPROM_ADDR_IPaddr          0  // 4*uint8_t 0-3
+#define EEPROM_ADDR_inputNumber     4  // 5*uint8_t 4-8
+#define EEPROM_ADDR_frequencyPreset 9  // 1*uint8_t
 
 byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
 IPAddress TLS_ip(192, 168, 0, 200);                     // DHCP preferred
@@ -65,6 +65,8 @@ void setup() {
   Serial1.begin(9600);
 
   pinMode(PIN_ETH_PHY_status, INPUT);
+  pinMode(PIN_HC12_set, OUTPUT);
+  digitalWrite(PIN_HC12_set, HIGH);
 
 #ifdef DEBUG
   Serial.print("\n\nversion: ");
@@ -78,8 +80,9 @@ void setup() {
   for (uint8_t i = 0; i < 5; i++) {
     inputNumber[i] = EEPROM.read(EEPROM_ADDR_inputNumber + i);
   }
-  frequency_preset = (Frequency_preset)EEPROM.read(EEPROM_ADDR_frequencyPreset);  
+  frequency_preset = (Frequency_preset)EEPROM.read(EEPROM_ADDR_frequencyPreset);
   update_p_frq_checked();
+  set_HC12();
   // Serial.printf("EEPROM freq preset: %c\n", frequency_preset + 65);
 #endif
 
@@ -246,8 +249,7 @@ void processConfData() {
     if (*p_data >= 'A' && *p_data <= 'C') {  // check if poiner is pointing correctly
       frequency_preset = (Frequency_preset)((*p_data) - 65);
       update_p_frq_checked();
-      // TODO: Actually set HC12
-      // TODO: write to EEPROM
+      set_HC12();
     } else {
       Serial.printf("\n\nERROR: pointer out of colected data");
     }
@@ -281,7 +283,7 @@ void processConfData() {
     } else {
       checkInputNumberProfile();
     }
-    EEPROM.write(EEPROM_ADDR_frequencyPreset, (uint8_t)frequency_preset);
+    EEPROM.write(EEPROM_ADDR_frequencyPreset, (uint8_t)frequency_preset);  // store frequency preset to EEPROM
 #endif
   }
 }
@@ -345,7 +347,7 @@ void vMixHandle() {
     }
     status = 0;
   } else {
-    // keepAlive();
+    keepAlive();
     status = 1;
   }
 }
@@ -449,4 +451,31 @@ void update_p_frq_checked() {
       p_frq_checked[i] = NULL;
     }
   }
+}
+
+void set_HC12() {
+  digitalWrite(PIN_HC12_set, LOW);
+  delay(100);
+  switch (frequency_preset) {
+    case 0:
+      Serial1.print("AT+C001\r\n");
+      Serial.println("Channel: 1");
+      break;
+
+    case 1:
+      Serial1.print("AT+C040\r\n");
+      Serial.println("Channel: 40");
+      break;
+
+    case 2:
+      Serial1.print("AT+C080\r\n");
+      Serial.println("Channel: 80");
+      break;
+  }
+  while (Serial1.available()) {
+    char incomingByte = Serial1.read();
+    Serial.print(incomingByte);
+  }
+
+  digitalWrite(PIN_HC12_set, HIGH);
 }
