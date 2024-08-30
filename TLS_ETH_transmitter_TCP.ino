@@ -472,10 +472,7 @@ void set_HC12() {
       Serial.println("Channel: 80");
       break;
   }
-  while (Serial1.available()) {
-    char incomingByte = Serial1.read();
-    Serial.print(incomingByte);
-  }
-
+  delay(100);
   digitalWrite(PIN_HC12_set, HIGH);
+  delay(100);
 }
