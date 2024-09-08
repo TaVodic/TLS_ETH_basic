@@ -15,24 +15,30 @@
 
 #define VERSION "ETH_basic_v1.2.0"
 
-#define DEFAULT_VALUE 0b001001001001001
-#define RECONNECT     1000  // connecting to vMix
-#define RESEND        100
-#define KEEPALIVE     2000
-#define TTK           500  // time to kill - cas do ktoreho ak strizna neodpovie, restartuje sa spojenie
-#define ACTIVE        3    // 3
-#define PREVIEW       2    // 2
-#define NOTHING       1    // 1
-
+// PIN definition
 #define PIN_HC12_set       22
 #define PIN_ETH_PHY_status 9
 
+// EEPROM adresses
 #define EEPROM_ADDR_IPaddr          0  // 4*uint8_t 0-3
 #define EEPROM_ADDR_inputNumber     4  // 5*uint8_t 4-8
 #define EEPROM_ADDR_frequencyPreset 9  // 1*uint8_t
 
-byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};  // 00:00 - dual, 00:01 - basic, 01:00 - RSG
-IPAddress TLS_ip(192, 168, 0, 200);                     // DHCP preferred
+// timeouts
+#define RECONNECT    1000  // connecting to vMix timout
+#define RESEND       100   // periodical resend to receivers
+#define KEEPALIVE    2000  // exmplicit update to vMix
+#define TTK          500   // Time To Kill - after no response from vMix connection is re-established
+#define DHCP_timeout 5000  // after this timout static IP adress is assigned
+
+// codes
+#define ACTIVE        3  // 3
+#define PREVIEW       2  // 2
+#define NOTHING       1  // 1
+#define DEFAULT_VALUE 0b001001001001001
+
+byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};
+IPAddress TLS_ip(192, 168, 0, 99);                      // DHCP preferred
 
 EthernetClient client;
 EthernetServer server(80);
@@ -57,7 +63,7 @@ uint8_t brightness[5] = {6, 6, 6, 6, 6};
 enum Frequency_preset { A,
                         B,
                         C } frequency_preset;  // value storing the current preset
-const char *p_frq_checked[3] = {NULL};         // array of pointers, where the one element points to "checked" showed on website
+const char *p_frq_checked[3] = {NULL};         // array of pointers, where the one element points to "checked" (frq_checked[]) showed on website
 uint8_t old_len;
 
 void setup() {
@@ -94,7 +100,7 @@ void setup() {
   }
 
 #ifdef DHCP
-  if (Ethernet.begin(TLS_mac, 5000) == 0) {
+  if (Ethernet.begin(TLS_mac, DHCP_timeout) == 0) {
     Serial.println("DHCP timeout, using static IP");
     Ethernet.begin(TLS_mac, TLS_ip);
   } else
