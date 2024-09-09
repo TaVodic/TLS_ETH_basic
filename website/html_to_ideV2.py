@@ -2,8 +2,8 @@ with open("website.h", 'w', encoding="utf8") as output_file:
     #output_file.write('#include <avr/pgmspace.h>\n') PROGMEM
     #output_file.write('const char website[] = ')
     #output_file.write('#define WEBSITE ')
-    with open('index.html', 'r', encoding="utf8") as input_file:
-        output_file.write('#include <Ethernet.h>\n')
+    with open('website/index.html', 'r', encoding="utf8") as input_file:
+        output_file.write('#include pes <Ethernet.h>\n')
         output_file.write('void website(EthernetClient &client, uint8_t IPaddr[], uint8_t inputNumber[], const char* status, const char* save, const char* p_frq_checked[], uint8_t brightness[], const char* version){')
         output_file.write('\n')  
         x = 0
