@@ -37,6 +37,9 @@
 * Camera screw 1/4 inch
 * Hook-and-loop fastener ([AliExpress](https://www.aliexpress.com/item/4000402019602.html?spm=a2g0o.cart.0.0.125638damhasXE&mp=1) link)
 
+### Receiver description
+![](Receiver.png)
+
 ## Developer info
 ### Commands
 * ```arduino-cli compile -b arduino:avr:mega --libraries EthernetMT```
