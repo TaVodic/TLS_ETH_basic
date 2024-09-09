@@ -53,6 +53,7 @@
 ```v1.2.0``` 14 LEDs
 
 ### MAC address assignment
+
 |  Device name |    MAC address    | Static IP address |
 |:------------:|:-----------------:|:-----------------:|
 | TLS_basic-T1 | 02:54:4C:53:00:01 |         -         |
