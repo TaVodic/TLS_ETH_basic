@@ -38,7 +38,7 @@
 #define DEFAULT_VALUE 0b001001001001001
 
 byte TLS_mac[] = {0x02, 0x54, 0x4C, 0x53, 0x02, 0x00};
-IPAddress TLS_ip(192, 168, 0, 99);                      // DHCP preferred
+IPAddress TLS_ip(192, 168, 74, 99);                      // DHCP preferred
 
 EthernetClient client;
 EthernetServer server(80);

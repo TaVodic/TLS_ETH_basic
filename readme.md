@@ -1,66 +1,72 @@
-# Tally Light System for one vMix video switcher
-## Features
-* 6 visual signals
-    * Active - red
-    * Preview - green
-    * Ready - blue
-    * Call - blinking yellow
-    * Connecting to video switcher - purple/blue
-    * Disconnected - purple
-* Multiple power supply options
-* Multiple mounting options
-* Three configurable frequency channels in the 433 MHz band
+# Tally Light System 
+## Funkcie
+* 6 vizuálnych signálov
+    * Active - červená
+    * Preview - zelená
+    * Pripravený - modrá
+    * Volanie - blikajúca žltá
+    * Pripájanie na strižňu - fialová/modrá
+    * Strata spojenia - fialová
+* Viac možností napájania
+* Viac možností montáže
+* Tri konfigurovateľné frekvenčné kanály v pásme 433 MHz
 
-## User guide
-### Setup
-1. Connect the power supply and Ethernet cable to the transmitter.
-2. IP address assignment:
-    * The connected router should assign TLS an IP address
-    * If there is no DHCP server (a router), the transmitter sets itself to a static IP address **192.168.0.99** after **10 seconds** from the Ethernet cable connection
-3. Open a browser on a computer connected to the same network as the TLS.
-4. Type the IP address of the TLS (dynamic from DHCP or the static one **192.168.0.99**)
-5. Set the vMix video switcher IP address on the website (the IP address of the computer where vMix is running)
-6. **TLS is ready for use!**
+## Užívateľský návod
+### Nastavenie
+1. Pripojte napájací zdroj a ethernetový kábel k vysielaču.
+2. Priradenie IP adresy:
+    * Pripojený router by mal priradiť TLS IP adresu
+    * Ak nie je prítomný DHCP server (router), vysielač si po **10 sekundách** od pripojenia ethernetového kábla nastaví statickú IP adresu **192.168.74.99**
+3. Otvorte prehliadač na počítači, ktorý je pripojený do rovnakej siete ako TLS.
+4. Zadajte IP adresu TLS (dynamickú z DHCP alebo statickú **192.168.74.99**)
+5. Nastavte IP adresu vMix strižne (IP adresa počítača, na ktorom beží vMix) na webovej stránke 
+6. **TLS je pripravené na použitie!**
 
-### Transmitter power supply options
-* Power adapter, 5.5/2.1mm DC connector (7-12V)
-* USB-B cable (5V)
+### Nastavenie frekvencie
+Ak dochádza k častým stratám spojenia medzi vysielačom a prijímačmi, odporúča sa prepnúť na iný frekvenčné kanál:
+1. Nastavte frekvenčný kanál (A, B alebo C) na webovej stránke pre vysielač
+2. Nastavte frekvenčný kanál (A, B alebo C) na prijímači pomocou posuvného prepínača
+3. Reštartujte prijímač (odpojte a znova pripojte batériu alebo adaptér)
 
-### Receiver power supply options
-* Battery pack Sony L-series NP-F (7.4V)
-* Power adapter, 5.5/2.1mm DC connector (7-12V)
-* USB-B Mini cable (5V)
+### Možnosti napájania vysielača
+* Napájací adaptér, 5.5/2.1mm DC konektor (7-12V)
+* USB-B kábel (5V)
 
-> **_NOTE:_** The maximum input voltage is 12V, but it's recommended to choose a lower voltage adapter (7.5V or 9V).
+### Možnosti napájania prijímača
+* Batéria Sony L-series NP-F (7.4V)
+* Napájací adaptér, 5.5/2.1mm DC konektor (7-12V)
+* USB-B Mini kábel (5V)
 
-### Receiver mounting options
-* Camera screw 1/4 inch
-* Hook-and-loop fastener ([AliExpress](https://www.aliexpress.com/item/4000402019602.html?spm=a2g0o.cart.0.0.125638damhasXE&mp=1) link)
+> **_POZNÁMKA:_** Maximálne vstupné napätie je 12V, ale odporúča sa zvoliť adaptér s čo najnižším napätím (7.5V alebo 9V).
 
-### Receiver description
+### Možnosti montáže prijímača
+* Závit 1/4 palca
+* Systém suchého zipsu ([AliExpress](https://www.aliexpress.com/item/4000402019602.html?spm=a2g0o.cart.0.0.125638damhasXE&mp=1) odkaz)
+
+### Popis prijímača
 ![](Receiver_LQ.jpg)
 
-## Developer info
-### Commands
+## Informácie pre vývojárov
+### Príkazy
 * ```arduino-cli compile -b arduino:avr:mega --libraries EthernetMT```
 * ```arduino-cli upload -b arduino:avr:mega -p COM9 -v```
 
-### Versions
-#### Transmitter - TLS_G3_ETH_basic 
-```v1.1.0``` ETH_basic_RLS04_06.09.2022 for Revart   
-```v1.2.0``` TLS for Andrej Sliacky (ETH_basic-T3)
-#### Receiver
-```v1.2.0``` 14 LEDs
+### Verzie
+#### Vysielač - TLS_G3_ETH_basic 
+```v1.1.0``` ETH_basic_RLS04_06.09.2022 pre Revart   
+```v1.2.0``` TLS pre TV ESO (ETH_basic-T3)
+#### Prijímač
+```v1.2.0``` 14 LED diód
 
-### MAC address assignment
+### Priradenie MAC adresy
 
-|  Device name |    MAC address    | Static IP address |
-|:------------:|:-----------------:|:-----------------:|
-| TLS_basic-T1 | 02:54:4C:53:00:01 |         -         |
-| TLS_basic-T2 | 02:54:4C:53:00:03 |   192.168.0.103   |
-|   TLS_dual   | 02:54:4C:53:00:00 |         -         |
-|    TLS_RSG   | 02:54:4C:53:01:00 |         -         |
-|  TLS_hybrid  | 02:54:4C:53:00:04 |   192.168.0.102   |
-|    TLS_G4    | 02:54:4C:53:00:02 |         -         |
-|    TLS_SDI   | 02:54:4C:53:00:05 |         -         |
-| TLS_basic-T3 | 02:54:4C:53:02:00 |   192.168.0.99    |
+|  Názov zariadenia |    MAC adresa    | Statická IP adresa |
+|:-----------------:|:----------------:|:------------------:|
+| TLS_basic-T1      | 02:54:4C:53:00:01 |         -         |
+| TLS_basic-T2      | 02:54:4C:53:00:03 |   192.168.0.103   |
+|   TLS_dual        | 02:54:4C:53:00:00 |         -         |
+|    TLS_RSG        | 02:54:4C:53:01:00 |         -         |
+|  TLS_hybrid       | 02:54:4C:53:00:04 |   192.168.0.102   |
+|    TLS_G4         | 02:54:4C:53:00:02 |         -         |
+|    TLS_SDI        | 02:54:4C:53:00:05 |         -         |
+| TLS_basic-T3      | 02:54:4C:53:02:00 |   192.168.0.99    |
