@@ -1,4 +1,4 @@
-# Tally Light System 
+# Tally Light System (TLS by eMT)
 ## Funkcie
 * 6 vizuálnych signálov
     * Active - červená
